@@ -1,6 +1,6 @@
 FROM python:3.10-alpine as builder
 RUN apk update && apk add --update git gcc libc-dev libffi-dev
-WORKDIR mhddos_proxy
+WORKDIR proxy
 COPY ./requirements.txt ./
 RUN pip3 install --target=/proxy/dependencies -r requirements.txt
 COPY ./ ./
