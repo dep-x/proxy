@@ -1065,7 +1065,7 @@ def main(method, urlraw, ip, threads, timer, proxy_fn=None, rpc=None, debug=Fals
     event.set()
     ts = time()
     while time() < ts + timer:
-        logger.debug(f'{bcolors.WARNING}Ціль:{bcolors.OKBLUE} %s,{bcolors.WARNING} Порт:{bcolors.OKBLUE} %s,{bcolors.WARNING} Метод:{bcolors.OKBLUE} %s{bcolors.WARNING} PPS:{bcolors.OKBLUE} %s,{bcolors.WARNING} BPS:{bcolors.OKBLUE} %s / %d%%{bcolors.RESET}' %
+        logger.debug(f'{bcolors.WARNING}Цель:{bcolors.OKBLUE} %s,{bcolors.WARNING} Порт:{bcolors.OKBLUE} %s,{bcolors.WARNING} Метод:{bcolors.OKBLUE} %s{bcolors.WARNING} PPS:{bcolors.OKBLUE} %s,{bcolors.WARNING} BPS:{bcolors.OKBLUE} %s / %d%%{bcolors.RESET}' %
                      (target or url.host,
                       port or (url.port or 80),
                       method,
